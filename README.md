@@ -2,7 +2,7 @@
 
 This project demonstrates the CI/CD pipeline for a Python-based Todo application, utilizing tools such as GitHub, Jenkins, SonarQube, Dependency Check, Docker, and Trivy. The application is containerized, scanned for vulnerabilities, and deployed to production.
 
-![Project Architecture](https://github.com/user-attachments/assets/c99da0b6-d10f-4247-b9e5-854345c7e5c1)
+![diagram](https://github.com/user-attachments/assets/63626aa9-893f-41c3-b490-6510968576a8)
 
 ## Jenkins Pipeline Setup
 
@@ -28,13 +28,16 @@ The pipeline script is available in the repository for automation of the build, 
 ![manage jenkins sonar](https://github.com/user-attachments/assets/4c55672f-2fa4-4b59-9caf-cfe7407daa00)
 ![manage jenkins dp](https://github.com/user-attachments/assets/6ad51419-4701-413e-b8cc-e6a18a6adb55)
 
+### Managing Jenkins Setup for email notification
+![smtp setup](https://github.com/user-attachments/assets/4bce8f73-1ec0-429d-bdf9-69ea1f7e4ab2)
+
 ## Jenkins Build and Deployment
 
 ### Triggering the Jenkins Build
 ![buildnow](https://github.com/user-attachments/assets/eea5093d-7078-4b98-a4f4-e9c64e907e8a)
 
 ### Build Job Completion
-![finished job](https://github.com/user-attachments/assets/eb902dd8-e519-4273-bfdf-24ee12252021)
+![success and fail job](https://github.com/user-attachments/assets/7931b096-c012-45d9-9911-9f96a9cc6d2d)
 
 ### SonarQube Quality Analysis Result
 The Jenkins build successfully passes the code analysis in SonarQube.
@@ -53,3 +56,10 @@ The Jenkins build successfully passes the code analysis in SonarQube.
 
 ### Testing the Todo Application in the Browser
 ![testing todo](https://github.com/user-attachments/assets/64fc7d16-d13d-4272-afe5-4463be745754)
+
+## Success email
+![success email](https://github.com/user-attachments/assets/b4029ab8-3e2c-4712-b103-f945cc75d8d3)
+
+## failure email
+
+
