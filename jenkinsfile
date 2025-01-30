@@ -1,0 +1,102 @@
+pipeline {
+    agent any
+    environment {
+        SCANNER_HOME = tool 'sonar-scanner'
+    }
+
+    stages {
+        stage('git-checkout') {
+            steps {
+                git branch: 'main', changelog: false, poll: false, url: 'https://github.com/SuMythC/DevOps-todo-kubernetes.git'
+            }
+        }
+
+        stage('Sonar Analysis') {
+            steps {
+                withSonarQubeEnv("sonar-scanner") {
+                    sh '''$SCANNER_HOME/bin/sonar-scanner -Dsonar.projectName=DevOps-CICD \
+                    -Dsonar.java.binaries=. \
+                    -Dsonar.projectKey=DevOps-CICD '''
+                }
+            }
+        }
+
+        stage('OWASP Dependency Check') {
+             steps {
+                  dependencyCheck additionalArguments: '--scan ./', odcInstallation: 'DP-check-1'
+                  // Publish the Dependency Check report to console and artifacts.
+                  dependencyCheckPublisher pattern: '**/dependency-check-report.xml'
+           }
+        }
+
+        stage('Docker Build and push') {
+            steps {
+                script {
+                    withDockerRegistry(credentialsId: 'username and password for docker') {
+                        sh "docker build -t username/todo-app:latest ."
+                        sh "docker push username/todo-app:latest"
+                    }
+                    
+                }
+            }
+        }
+
+        stage('trivy') {
+            steps {
+                sh "trivy image username/todo-app:latest"
+            }
+        }
+
+        stage('Deploy to Docker') {
+            steps {
+                script {
+                    sh "docker run -d --name to-do-app -p 8000:8000 username/todo-app:latest"
+                }
+            }
+        }
+    }
+    post {
+        always {
+            script {
+                def jobState = currentBuild.currentResult
+                def buildNumber = env.BUILD_NUMBER
+                def jobName = env.JOB_NAME
+                def subject = "${jobName} - Build #${buildNumber} - Status: ${jobState}"
+                def body = """
+                <html>
+                <body>
+                    <div style='text-align: center;'>
+                """
+
+                // Check the condition based on the build result and set the email body with colors.
+                if (jobState == 'SUCCESS') {
+                    // Success with green box
+                    body += """
+                    <div style='border: 5px solid green; padding: 20px; display: inline-block;'>
+                        <h1 style='color:green; margin: 0;'>SUCCESS</h1>
+                        <p>Job Name: ${jobName}</p>
+                        <p>Job Number: ${buildNumber}</p>
+                    </div>
+                    """
+                } else {
+                    // Failure with red box, including the failed stage
+                    body += """
+                    <div style='border: 5px solid red; padding: 20px; display: inline-block;'>
+                        <h1 style='color:red; margin: 0;'>FAILURE</h1>
+                        <p>Job Name: ${jobName}</p>
+                        <p>Job Number: ${buildNumber}</p>
+                    </div>
+                    """
+                }
+
+                body += """
+                    </div>
+                </body>
+                </html>
+                """
+                mail(to: 'youare@email.com', subject: subject, body: body, mimeType: 'text/html')
+            }
+        }
+        
+    }
+}
