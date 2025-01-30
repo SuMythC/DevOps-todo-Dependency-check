@@ -58,8 +58,9 @@ The Jenkins build successfully passes the code analysis in SonarQube.
 ![testing todo](https://github.com/user-attachments/assets/64fc7d16-d13d-4272-afe5-4463be745754)
 
 ## Success email
-![success email](https://github.com/user-attachments/assets/b4029ab8-3e2c-4712-b103-f945cc75d8d3)
+![success email](https://github.com/user-attachments/assets/a6d4cacf-03ff-43d8-b45e-31c94200dd3d)
 
 ## failure email
+![fail email](https://github.com/user-attachments/assets/d6a3e070-5176-4436-a3b7-99e39f86cc6d)
 
 
