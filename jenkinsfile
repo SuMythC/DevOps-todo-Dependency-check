@@ -94,7 +94,7 @@ pipeline {
                 </body>
                 </html>
                 """
-                mail(to: 'youare@email.com', subject: subject, body: body, mimeType: 'text/html')
+                mail(to: '<your email>', subject: subject, body: body, mimeType: 'text/html')
             }
         }
         
